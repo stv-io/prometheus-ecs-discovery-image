@@ -34,10 +34,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - 
-        name: Build and push
+        name: Build 0
+        uses: docker/build-push-action@v3.0.0
+        with:        
+          context: "https://github.com/teralytics/prometheus-ecs-discovery.git#master"
+          platforms: linux/amd64,linux/arm64
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          target: 0
+      - 
+        name: Build and push 1
         uses: docker/build-push-action@v3.0.0
         with:        
           context: "https://github.com/teralytics/prometheus-ecs-discovery.git#master"
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          target: 1         
