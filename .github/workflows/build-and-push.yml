@@ -11,6 +11,9 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
+        with:
+          repository: 'teralytics/prometheus-ecs-discovery'
+          ref: 'a5a5a04e7360664fe10f30c80c9c447425af8beb'
       -
         name: Docker meta
         id: meta
@@ -30,6 +33,6 @@ jobs:
         name: Build and push
         uses: int128/kaniko-action@v1
         with:        
-          context: "https://github.com/teralytics/prometheus-ecs-discovery.git#master"
+          # context: .
           tags: ${{ steps.meta.outputs.tags }}
           push: true
