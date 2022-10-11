@@ -1,0 +1,35 @@
+name: Build and publish container image
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'teralytics/prometheus-ecs-discovery'
+          ref: 'a5a5a04e7360664fe10f30c80c9c447425af8beb'
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4.0.1
+        with:
+          images: ghcr.io/${{ github.repository }}
+      - 
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Build and push
+        uses: int128/kaniko-action@v1
+        with:        
+          tags: ${{ steps.meta.outputs.tags }}
+          push: true
